@@ -7,9 +7,7 @@ const popupMessageHandler = message => console.log('in-content.js - message from
 
 chrome.extension.onConnect.addListener(popupPort => {
     popupPort.onMessage.addListener(popupMessageHandler);
-    popupPort.onDisconnect.addListener(() => {
-        console.log('in-content.js - disconnected from popup');
-    });
+    popupPort.onDisconnect.addListener(() => console.log('in-content.js - disconnected from popup'));
     port = popupPort;
     sendPortMessage('message from in-content.js');
 });
@@ -26,11 +24,13 @@ const isNumber = (text) => {
 }
 
 const isValidTweet = (text) => {
-    if(!text) return false;
+    if (!text) return false;
     const minutesLabel = text[text.length - 1] == 'm';
     const minutesValue = isNumber(text[text.length - 2]);
     return !(minutesLabel && minutesValue);
 }
+
+const removeUrls = (text) => text.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
 
 const start = () => {
     if (!isTwitter) return;
@@ -38,7 +38,7 @@ const start = () => {
     setInterval(() => {
         const tweets = [...document.querySelectorAll('article > div > div > div > div')].map(item => item.innerText)
             .filter(text => isValidTweet(text))
-            .map(text => text.replace(/(?:https?|ftp):\/\/[\n\S]+/g, ''));
+            .map(text => removeUrls(text));
         const concatened = allTweets.concat(tweets)
         allTweets = concatened.filter((item, pos) => concatened.indexOf(item) === pos);
     }, INTERVAL);

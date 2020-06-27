@@ -16,18 +16,27 @@ const getClient = () => {
 
 const analyzeText = async () => {
     const toneAnalyzer = getClient();
-    const text = 'VAI TOMAR NO CU!';
+    //https://twitter.com/Metropoles/status/1276682873144250368
+    const text = 'Mais o interessante é que ela cerca ele para não entrar no carro. Mas senão estava dando certo, porque fazer aquela cena toda. Porque não enfiou a viola dentro saco e não foi embora deixando o jogador a própria sorte. Muito estranho. E tem algo mais, que uma simples briga.!' 
+    + 'Com esse video ela tbm se auto incrimina, ela agride ele duas vezes, da dois empurrões sendo o segundo no rosto, DEIXAR CLARO NÉ QUE NÃO COMPACTUO COM NENHUM TIPO DE AGRESSÃO, NÃO TO AQUI JUSTIFICANDO ELE TER AGREDIDO ELA DAQUELA FORMA, APENAS FALANDO O QUE ESTÁ NA GRAVAÇÃO';
     const toneParams = {
-        toneInput: { text },
+        toneInput: {
+            text
+        },
         contentType: 'application/json',
     };
-    return await toneAnalyzer.tone(toneParams);
+    const {
+        result
+    } = await toneAnalyzer.tone(toneParams);
+    return result;
 }
 
 const getMetter = async (tweets) => {
-    const result = await analyzeText();
+    const {
+        sentences_tone
+    } = await analyzeText();
     return {
-        result
+        result : sentences_tone
     };
 };
 

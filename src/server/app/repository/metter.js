@@ -14,7 +14,7 @@ const getClient = () => {
     });
 }
 
-const analyzeText = async () => {
+const analyzeText = async (tweets) => {
     const toneAnalyzer = getClient();
     //https://twitter.com/Metropoles/status/1276682873144250368
     const text = 'Mais o interessante é que ela cerca ele para não entrar no carro. Mas senão estava dando certo, porque fazer aquela cena toda. Porque não enfiou a viola dentro saco e não foi embora deixando o jogador a própria sorte. Muito estranho. E tem algo mais, que uma simples briga.!' 
@@ -34,7 +34,7 @@ const analyzeText = async () => {
 const getMetter = async (tweets) => {
     const {
         sentences_tone
-    } = await analyzeText();
+    } = await analyzeText(tweets);
     return {
         result : sentences_tone
     };
